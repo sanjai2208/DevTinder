@@ -49,10 +49,10 @@ app.patch("/user", async (req, res) => {
   const userId = req.body.userId;
   const data = req.body;
   try {
-    const user = await User.findByIdAndUpdate(userId, data);
+    const user = await User.findByIdAndUpdate(userId, data,{runValidators : true });
     res.send("user updated successfully");
   } catch (err) {
-    res.status(404).send("users not found");
+    res.status(400).send("UPDATE FAILED" + err.message);
   }
 });
 
