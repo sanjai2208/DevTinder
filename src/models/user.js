@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const validator = require ("validator")
 const userSchema = new mongoose.Schema({
   firstName: {
     type: String,
@@ -16,13 +17,22 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
     lowercase: true,
-    match: /.+@.+\..+/,
+    
+    validate(value){
+      if(!validator.isEmail(value)){
+        throw new Error("Invalid Email address")
+      }
+    }
   },
   password: {
     type: String,
     required: true,
     minlength: 7,
-    maxlength: 20
+    validate(value){
+      if(!validator.isStrongPassword(value)){
+        throw new Error("Try strong password")
+      }
+    }
   },
   age: {
     type: Number,
@@ -39,6 +49,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     default:
       "https://static.vecteezy.com/system/resources/previews/045/944/199/non_2x/male-default-placeholder-avatar-profile-gray-picture-isolated-on-background-man-silhouette-picture-for-user-profile-in-social-media-forum-chat-greyscale-illustration-vector.jpg",
+    validate(value){
+      if(!validator.isURL(value)){
+        throw new Error ("profile URL is not valid")
+      }
+    }
   },
   about: {
     type: String,
