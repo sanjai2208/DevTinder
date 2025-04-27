@@ -44,7 +44,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     enum: {
       values: ["male", "female", "others"],
-      message: "Gender is not valid",
+      message: "{VALUE} is not valid",
     },
   },  
   photoUrl: {
@@ -67,7 +67,8 @@ const userSchema = new mongoose.Schema({
 },{timestamps:true});
 userSchema.methods.validatePassword = async function(passwordInputByUser){
   const user = this;
-  const isPasswordValid = await bcrypt.compare(passwordInputByUser, user.password)
+  const passwordHash =user.password;
+  const isPasswordValid = await bcrypt.compare(passwordInputByUser, passwordHash)
   return isPasswordValid;
 } 
 
