@@ -18,6 +18,7 @@ const validateLogin = (req) => {
 const validateProfileEditData = (req) => {
 const {photoUrl, about} = req.body;
   const allowedEditField = [
+    "firstName",
     "skills",
     "lastName",
     "photoUrl",

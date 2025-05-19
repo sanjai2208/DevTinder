@@ -41,9 +41,7 @@ userRouter.get("/user/connections", userAuth, async (req, res) => {
         return row.fromUserId;
       }
     });
-    res.json({
-      data,
-    });
+    res.json({ data });
   } catch (err) {
     res.status(400).send({ message: "ERROR : " + err.message });
   }
@@ -53,9 +51,8 @@ userRouter.get("/feed", userAuth, async (req, res) => {
     const loggedInUser = req.user;
     const page = parseInt(req.query.page) || 1;
     let limit = parseInt(req.query.limit) || 10;
-    limit = limit > 50 ? 50 : limit
-    const skip = (page-1)*limit
-
+    limit = limit > 50 ? 50 : limit;
+    const skip = (page - 1) * limit;
 
     const connectionRequests = await ConnectionRequest.find({
       $or: [{ fromUserId: loggedInUser }, { toUserId: loggedInUser }],
@@ -71,9 +68,12 @@ userRouter.get("/feed", userAuth, async (req, res) => {
         { _id: { $nin: Array.from(hideUserFromFeed) } },
         { _id: { $ne: loggedInUser._id } },
       ],
-    }).select(USER_SAFE_DATA).skip(skip).limit(limit)
+    })
+      .select(USER_SAFE_DATA)
+      .skip(skip)
+      .limit(limit);
 
-    res.json({users : users});
+    res.json({ users: users });
   } catch (err) {
     res.status(400).useChunkedEncodingByDefault("ERROR : " + err.message);
   }

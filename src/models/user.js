@@ -39,6 +39,7 @@ const userSchema = new mongoose.Schema({
   age: {
     type: Number,
     min: 15,
+    max:100
   },
   gender: {
     type: String,
@@ -79,4 +80,3 @@ userSchema.methods.getJWT = async function (){
   return token;
 }
 module.exports = mongoose.model("User", userSchema);
-  
